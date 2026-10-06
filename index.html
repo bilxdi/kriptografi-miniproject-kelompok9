@@ -1,31 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" data-theme="gelap">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CipherFlix · Kelompok 9</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
-  <title>Homofonik Caesar Transposisi</title>
 </head>
 <body>
-  <div class="main">
-    <h2>Enkripsi</h2><br>
-  
-    <input type="text" id="enplain" placeholder="Plainteks">
-    <input type="text" id="enchiper" placeholder="Chiperteks" disabled>
-  
-    <button onclick="encrypt()">Enkrip</button>
-    <small class="error" id="error"></small>
-  </div>
+  <header class="nav">
+    <a class="logo" href="#">CIPHERFLIX</a>
+    <nav class="menu">
+      <a href="#proses">Proses</a>
+      <a href="#cara-kerja">Cara Kerja</a>
+      <a href="#analisis">Kriptanalisis</a>
+    </nav>
+    <button id="tombolTema" class="btn btn-kecil">Mode terang</button>
+  </header>
 
-  <div class="main">
-    <h2>Dekripsi</h2><br>
-  
-    <input type="text" id="dechiper" placeholder="Chiperteks">
-    <input type="text" id="deplain" placeholder="Plainteks" disabled>
-  
-    <button onclick="decrypt()">Dekrip</button>
-    <small class="error" id="error"></small>
-  </div>
+  <section class="hero">
+    <p class="label">KELOMPOK 9 · KRIPTOGRAFI A</p>
+    <h1>Satu pesan,<br>tiga lapis sandi.</h1>
+    <p class="meta"><span class="aksen">3 algoritma</span> Homofonik · Caesar · Transposisi Kolom</p>
+    <p class="deskripsi">Tulis pesan, atur kunci, lalu lihat bagaimana setiap huruf berubah di setiap tahap.</p>
+    <div class="baris-aksi">
+      <a class="btn btn-utama" href="#proses">▶ Mulai</a>
+      <a class="btn btn-kedua" href="#cara-kerja">Cara kerja</a>
+    </div>
+  </section>
+
+  <main>
+    <!-- ===== KUNCI ===== -->
+    <section class="bagian">
+      <h2>Kunci</h2>
+      <div class="grid-kunci">
+        <label>Kunci Caesar (k)
+          <input id="kunciCaesar" type="number" value="3">
+        </label>
+        <label>Kunci Transposisi
+          <input id="kunciKolom" type="text" value="KRIPTO">
+        </label>
+        <div class="kartu-tabel">
+          <span>Tabel Homofon</span>
+          <button id="tombolTabel" class="btn btn-kecil">Lihat tabel</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ENKRIPSI / DEKRIPSI ===== -->
+    <section id="proses" class="bagian">
+      <div class="tab">
+        <button class="tab-btn aktif" data-panel="panelEnkripsi">Enkripsi</button>
+        <button class="tab-btn" data-panel="panelDekripsi">Dekripsi</button>
+      </div>
+
+      <div id="panelEnkripsi" class="panel">
+        <label>Plainteks
+          <textarea id="inputPlain" rows="3">SERANG SAAT FAJAR</textarea>
+        </label>
+        <small class="catatan">Huruf otomatis diubah jadi kapital. Spasi dan angka tidak diubah.</small>
+        <div class="baris-aksi">
+          <label class="btn btn-kedua">Upload .txt<input id="filePlain" type="file" accept=".txt" hidden></label>
+          <button id="tombolEnkripsi" class="btn btn-utama">Enkripsi</button>
+        </div>
+      </div>
+
+      <div id="panelDekripsi" class="panel" hidden>
+        <label>Cipherteks
+          <textarea id="inputCipher" rows="3"></textarea>
+        </label>
+        <div class="baris-aksi">
+          <label class="btn btn-kedua">Upload .txt<input id="fileCipher" type="file" accept=".txt" hidden></label>
+          <button id="tombolDekripsi" class="btn btn-utama">Dekripsi</button>
+        </div>
+      </div>
+
+      <p id="pesanError" class="error"></p>
+
+      <div id="hasil" hidden>
+        <ol id="daftarTahap" class="daftar-tahap"></ol>
+        <div class="hasil-akhir">
+          <span id="labelAkhir" class="label">Cipherteks</span>
+          <output id="teksAkhir" class="mono"></output>
+          <div class="baris-aksi">
+            <button id="tombolSalin" class="btn btn-kecil">Salin</button>
+            <button id="tombolUnduh" class="btn btn-kecil">Unduh .txt</button>
+          </div>
+        </div>
+        <p id="validasi" class="validasi"></p>
+      </div>
+    </section>
+
+    <!-- ===== CARA KERJA ===== -->
+    <section id="cara-kerja" class="bagian">
+      <h2>Cara Kerja</h2>
+      <p class="sub">Dijelaskan memakai pesan dan kunci terakhir yang dienkripsi.</p>
+      <div id="daftarEpisode" class="daftar-episode"></div>
+      <article id="layar" class="layar"></article>
+      <div class="baris-aksi">
+        <button id="tombolSebelum" class="btn btn-kedua">◀ Sebelumnya</button>
+        <button id="tombolLanjut" class="btn btn-utama">Lanjut ▶</button>
+      </div>
+    </section>
+
+    <!-- ===== KRIPTANALISIS ===== -->
+    <section id="analisis" class="bagian">
+      <h2>Kriptanalisis</h2>
+      <p class="sub">Penyerang tahu tabel homofon dan kunci transposisi, tapi tidak tahu k.
+        Karena k cuma punya 26 kemungkinan, semuanya dicoba (brute force).</p>
+      <button id="tombolBrute" class="btn btn-kedua">Coba k = 0 sampai 25</button>
+      <div class="tabel-wrap"><table id="tabelBrute" class="tabel"></table></div>
+    </section>
+  </main>
+
+  <dialog id="dialogTabel">
+    <h3>Tabel Homofon</h3>
+    <p class="sub">Pasangan bertanda merah adalah hasil perbaikan dari tabel slide.</p>
+    <div id="isiTabel" class="grid-homofon"></div>
+    <button id="tombolTutup" class="btn btn-utama">Tutup</button>
+  </dialog>
+
+  <footer>
+    Kelompok 9 · Kriptografi A · Informatika Unsoed<br>
+    Rahmadani Hafsari · Latifanika · Ahmad Fikri Zakaria · Biladi Amna · Fathan
+  </footer>
+
+  <script src="js/homofonik.js"></script>
+  <script src="js/caesar.js"></script>
+  <script src="js/transposisi.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
