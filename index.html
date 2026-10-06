@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <title>Homofonik Caesar Transposisi</title>
+</head>
+<body>
+  <div class="main">
+    <h2>Enkripsi</h2><br>
+  
+    <input type="text" id="enplain" placeholder="Plainteks">
+    <input type="text" id="enchiper" placeholder="Chiperteks" disabled>
+  
+    <button onclick="encrypt()">Enkrip</button>
+    <small class="error" id="error"></small>
+  </div>
+
+  <div class="main">
+    <h2>Dekripsi</h2><br>
+  
+    <input type="text" id="dechiper" placeholder="Chiperteks">
+    <input type="text" id="deplain" placeholder="Plainteks" disabled>
+  
+    <button onclick="decrypt()">Dekrip</button>
+    <small class="error" id="error"></small>
+  </div>
+</body>
+</html>
