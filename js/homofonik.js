@@ -11,7 +11,7 @@ const ABJAD = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // dipakai juga di caesar.js
 // Tabel dari slide Kriptografi Klasik 1 hlm. 25, SUDAH DIPERBAIKI:
 // di slide ada 4 pasangan dobel (TF, JO, MS, FI) yang bikin dekripsi ambigu.
 // Diganti: N: TF->QZ, L: JO->VW, T: MS->XK, X: FI->ZQ
-const TABEL_HOMOFON = {
+let TABEL_HOMOFON = {
   A: ['BU', 'TX', 'YR', 'MB', 'OP', 'TF', 'QA'],
   B: ['ER', 'FY'],
   C: ['IU', 'CW', 'PL'],
@@ -72,4 +72,21 @@ function homofonikDekripsi(teks) {
     }
   }
   return hasil;
+}
+
+// Update tabel homofon dari input user, dan cek apakah ada homofon yang dobel
+function updateTabelHomofon(newTabel) {
+  const seen = new Set();
+  for (const huruf in newTabel) {
+    for (const pasangan of newTabel[huruf]) {
+      if (pasangan.length !== 2) {
+        throw new Error(`Homofon "${pasangan}" tidak valid. Setiap homofon harus terdiri dari tepat 2 huruf.`);
+      }
+      if (seen.has(pasangan)) {
+        throw new Error(`Pasangan "${pasangan}" dipakai lebih dari satu kali! Tidak boleh ada homofon yang double.`);
+      }
+      seen.add(pasangan);
+    }
+  }
+  TABEL_HOMOFON = newTabel;
 }

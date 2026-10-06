@@ -116,9 +116,15 @@
 
   <dialog id="dialogTabel">
     <h3>Tabel Homofon</h3>
-    <p class="sub">Pasangan bertanda merah adalah hasil perbaikan dari tabel slide.</p>
-    <div id="isiTabel" class="grid-homofon"></div>
-    <button id="tombolTutup" class="btn btn-utama">Tutup</button>
+    <p class="sub">Masukkan homofon yang dipisahkan oleh spasi. Tidak boleh ada homofon yang dobel!</p>
+    <form id="formHomofon">
+      <div id="isiTabel" class="grid-homofon"></div>
+      <p id="errorHomofon" class="error"></p>
+      <div class="baris-aksi">
+        <button type="button" id="tombolTutupTabel" class="btn btn-kedua">Batal</button>
+        <button type="submit" id="tombolSimpanTabel" class="btn btn-utama">Simpan</button>
+      </div>
+    </form>
   </dialog>
 
   <footer>

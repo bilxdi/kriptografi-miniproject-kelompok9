@@ -227,12 +227,80 @@ $('tombolBrute').onclick = () => jalankan(() => {
 });
 
 // ---------- 7. Dialog tabel homofon ----------
-const DIPERBAIKI = ['QZ', 'VW', 'XK', 'ZQ'];
-$('isiTabel').innerHTML = Object.entries(TABEL_HOMOFON).map(([huruf, daftar]) =>
-  `<div><b>${huruf}</b>${daftar.map((p) => (DIPERBAIKI.includes(p) ? `<span class="diperbaiki">${p}</span>` : p)).join(' ')}</div>`
-).join('');
-$('tombolTabel').onclick = () => $('dialogTabel').showModal();
-$('tombolTutup').onclick = () => $('dialogTabel').close();
+function renderTabelHomofon() {
+  $('isiTabel').innerHTML = Object.entries(TABEL_HOMOFON).map(([huruf, daftar]) =>
+    `<div class="homofon-item" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+      <label style="width: 20px;"><b>${huruf}</b></label>
+      <input type="text" id="homofon-${huruf}" value="${daftar.join(' ')}" class="input-homofon" style="flex: 1; padding: 0.25rem;">
+    </div>`
+  ).join('');
+}
+
+renderTabelHomofon();
+
+$('tombolTabel').onclick = () => {
+  renderTabelHomofon();
+  $('errorHomofon').textContent = '';
+  $('dialogTabel').showModal();
+};
+
+$('tombolTutupTabel').onclick = () => $('dialogTabel').close();
+
+$('formHomofon').onsubmit = (e) => {
+  e.preventDefault();
+  $('errorHomofon').textContent = '';
+  
+  // Reset style
+  document.querySelectorAll('.input-homofon').forEach(el => {
+    el.style.color = '';
+    el.style.borderColor = '';
+  });
+
+  try {
+    const newTable = {};
+    const seen = new Set();
+    let duplicate = null;
+    let invalidLength = null;
+
+    for (const huruf of ABJAD) {
+      const inputVal = $(`homofon-${huruf}`).value.toUpperCase().trim();
+      if (!inputVal) throw new Error(`Huruf ${huruf} harus punya minimal 1 homofon.`);
+      const pairs = inputVal.split(/[\s,]+/).filter(Boolean);
+      newTable[huruf] = pairs;
+
+      for (const pasangan of pairs) {
+        if (pasangan.length !== 2) {
+          invalidLength = { huruf, pasangan };
+        }
+        if (seen.has(pasangan) && !duplicate) {
+          duplicate = pasangan;
+        }
+        seen.add(pasangan);
+      }
+    }
+
+    if (invalidLength) {
+      $(`homofon-${invalidLength.huruf}`).style.borderColor = 'red';
+      throw new Error(`Homofon "${invalidLength.pasangan}" tidak valid. Setiap homofon harus terdiri dari tepat 2 huruf.`);
+    }
+
+    if (duplicate) {
+      // Highlight semua input yang mengandung homofon duplikat
+      for (const huruf of ABJAD) {
+        if (newTable[huruf].includes(duplicate)) {
+          $(`homofon-${huruf}`).style.color = 'red';
+          $(`homofon-${huruf}`).style.borderColor = 'red';
+        }
+      }
+      throw new Error(`Pasangan "${duplicate}" dipakai lebih dari satu kali! Tidak boleh ada homofon yang double.`);
+    }
+
+    updateTabelHomofon(newTable);
+    $('dialogTabel').close();
+  } catch (err) {
+    $('errorHomofon').textContent = err.message;
+  }
+};
 
 // ---------- 8. Mode gelap / terang ----------
 function aturTema(tema) {
