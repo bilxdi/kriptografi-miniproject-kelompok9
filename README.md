@@ -35,31 +35,31 @@ Tanpa library kriptografi; semua algoritma ditulis manual.
   <table>
     <tr>
       <td align="center">
-        <img src="docs/1.png" alt="CipherFlix-1"><br>
+        <img src="docs/1.png" alt="CipherFlix-1" height="240"><br>
         <b>Home</b>
       </td>
       <td align="center">
-        <img src="docs/2.png" alt="CipherFlix-2"><br>
+        <img src="docs/2.png" alt="CipherFlix-2" height="240"><br>
         <b>Tabel Homofon</b>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <img src="docs/3.png" alt="CipherFlix-3"><br>
+        <img src="docs/3.png" alt="CipherFlix-3" height="240"><br>
         <b>Enkripsi</b>
       </td>
       <td align="center">
-        <img src="docs/4.png" alt="CipherFlix-4"><br>
+        <img src="docs/4.png" alt="CipherFlix-4" height="240"><br>
         <b>Dekripsi</b>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <img src="docs/5.png" alt="CipherFlix-3"><br>
+        <img src="docs/5.png" alt="CipherFlix-3" height="240"><br>
         <b>Cara Kerja</b>
       </td>
       <td align="center">
-        <img src="docs/6.png" alt="CipherFlix-4"><br>
+        <img src="docs/6.png" alt="CipherFlix-4" height="240"><br>
         <b>Kriptanalisis</b>
       </td>
     </tr>
