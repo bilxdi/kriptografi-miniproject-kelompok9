@@ -31,4 +31,4 @@ Catatan: tabel homofon di slide punya 4 pasangan dobel (TF, JO, MS, FI) yang mem
 Tanpa library kriptografi; semua algoritma ditulis manual.
 
 ## Anggota
-Rahmadani Hafsari (H1D024057) · Biladi Amna (H1D024074) · Ahmad Fikri Zakaria (H1D024062) · Latifanika · Fathan
+Rahmadani Hafsari (H1D024057) · Biladi Amna (H1D024074) · Ahmad Fikri Zakaria (H1D024062) · Latifanika Nurafwi (H1D024099)· Muhammad Fathan Ramdani (H1D024026)
