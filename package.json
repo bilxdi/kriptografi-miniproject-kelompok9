@@ -1,0 +1,24 @@
+{
+  "name": "kriptografi-miniproject-kelompok9",
+  "version": "1.0.0",
+  "description": "Program enkripsi berlapis untuk Tugas Proyek Kriptografi (IF21A05), Informatika Unsoed.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bilxdi/kriptografi-miniproject-kelompok9.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bilxdi/kriptografi-miniproject-kelompok9/issues"
+  },
+  "homepage": "https://github.com/bilxdi/kriptografi-miniproject-kelompok9#readme"
+}

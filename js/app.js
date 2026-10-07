@@ -4,6 +4,48 @@
 // Alur dekripsi : kebalikannya (Transposisi -> Caesar -> Homofonik)
 // ======================================================
 
+const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+const JONG = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+
+function uraiHangul(str) {
+  let res = '';
+  for(let i=0; i<str.length; i++) {
+    const code = str.charCodeAt(i) - 44032;
+    if(code >= 0 && code <= 11171) {
+      res += CHO[Math.floor(code/588)] + JUNG[Math.floor((code%588)/28)] + (code%28 ? JONG[code%28] : '');
+    } else res += str[i];
+  }
+  return res;
+}
+
+function rakitHangul(str) {
+  let res = '';
+  let i = 0;
+  while (i < str.length) {
+    const c1 = CHO.indexOf(str[i]);
+    if (c1 !== -1 && i + 1 < str.length) {
+      const c2 = JUNG.indexOf(str[i+1]);
+      if (c2 !== -1) {
+        let c3 = 0;
+        if (i + 2 < str.length) {
+          const nextJong = JONG.indexOf(str[i+2]);
+          if (nextJong > 0 && !(i + 3 < str.length && JUNG.indexOf(str[i+3]) !== -1)) {
+            c3 = nextJong;
+            res += String.fromCharCode(44032 + (c1 * 588) + (c2 * 28) + c3);
+            i += 3; continue;
+          }
+        }
+        res += String.fromCharCode(44032 + (c1 * 588) + (c2 * 28));
+        i += 2; continue;
+      }
+    }
+    res += str[i];
+    i++;
+  }
+  return res;
+}
+
 const $ = (id) => document.getElementById(id);
 let terakhir = null; // data enkripsi terakhir, dipakai di "Cara Kerja"
 let episodeAktif = 0;
@@ -11,9 +53,10 @@ let episodeAktif = 0;
 // ---------- 1. Ambil & cek kunci ----------
 function ambilKunci() {
   const k = parseInt($('kunciCaesar').value, 10);
-  const kolom = $('kunciKolom').value.toUpperCase().replace(/[^A-Z]/g, '');
+  const kolomInput = uraiHangul($('kunciKolom').value.toUpperCase());
+  const kolom = [...kolomInput].filter(c => ABJAD.includes(c)).join('');
   if (Number.isNaN(k)) throw new Error('Kunci Caesar harus angka.');
-  if (kolom.length < 2) throw new Error('Kunci transposisi minimal 2 huruf (A-Z).');
+  if (kolom.length < 2) throw new Error('Kunci transposisi minimal 2 huruf dari alfabet.');
   return { k, kolom };
 }
 
@@ -52,38 +95,40 @@ function jalankan(fungsi) {
 }
 
 $('tombolEnkripsi').onclick = () => jalankan(() => {
-  const plain = $('inputPlain').value.toUpperCase();
+  const plain = uraiHangul($('inputPlain').value.toUpperCase());
   if (!plain.trim()) throw new Error('Plainteks masih kosong.');
 
   terakhir = enkripsi(plain, ambilKunci());
+  const finalCipher = rakitHangul(terakhir.t3);
   tampilkanHasil([
     ['TAHAP 1 · HOMOFONIK', terakhir.t1],
     ['TAHAP 2 · CAESAR (k = ' + terakhir.k + ')', terakhir.t2],
     ['TAHAP 3 · TRANSPOSISI KOLOM (' + terakhir.kolom + ')', terakhir.t3]
-  ], 'CIPHERTEKS', terakhir.t3);
+  ], 'CIPHERTEKS', finalCipher);
 
   // Validasi: dekripsi lagi, harus sama persis dengan plainteks
-  const cek = dekripsi(terakhir.t3, terakhir).plain;
+  const cek = dekripsi(uraiHangul(finalCipher), terakhir).plain;
   $('validasi').className = 'validasi ' + (cek === plain ? 'ok' : 'gagal');
   $('validasi').textContent = cek === plain
     ? '✓ Valid: hasil dekripsi identik dengan plainteks awal'
     : '✗ Tidak valid: hasil dekripsi berbeda';
 
-  $('inputCipher').value = terakhir.t3; // siap dicoba di tab Dekripsi
+  $('inputCipher').value = finalCipher; // siap dicoba di tab Dekripsi
   tampilkanEpisode(0);
 });
 
 $('tombolDekripsi').onclick = () => jalankan(() => {
   // jangan di-trim: spasi di awal/akhir bisa jadi bagian cipherteks
-  const cipher = $('inputCipher').value.toUpperCase();
+  const cipher = uraiHangul($('inputCipher').value.toUpperCase());
   if (!cipher.trim()) throw new Error('Cipherteks masih kosong.');
 
   const d = dekripsi(cipher, ambilKunci());
+  const finalPlain = rakitHangul(d.plain);
   tampilkanHasil([
     ['TAHAP 1 · BALIK TRANSPOSISI KOLOM', d.t1],
     ['TAHAP 2 · BALIK CAESAR', d.t2],
     ['TAHAP 3 · BALIK HOMOFONIK', d.plain]
-  ], 'PLAINTEKS', d.plain);
+  ], 'PLAINTEKS', finalPlain);
   $('validasi').textContent = '';
 });
 
@@ -158,11 +203,11 @@ function isiEpisode(i, d) {
   if (i === 1) {
     const baris = [...d.t1].filter((ch) => ABJAD.includes(ch)).slice(0, 8).map((ch) => {
       const p = ABJAD.indexOf(ch);
-      const c = mod(p + d.k, 26);
-      return [ch, p, `(${p} + ${d.k}) mod 26 = ${c}`, `<b>${ABJAD[c]}</b>`];
+      const c = mod(p + d.k, ABJAD.length);
+      return [ch, p, `(${p} + ${d.k}) mod ${ABJAD.length} = ${c}`, `<b>${ABJAD[c]}</b>`];
     });
-    return `<p>Huruf diubah ke angka (A = 0 … Z = 25), lalu dihitung
-      <span class="rumus mono">c = (p + k) mod 26</span></p>
+    return `<p>Huruf diubah ke angka (0 … ${ABJAD.length - 1}), lalu dihitung
+      <span class="rumus mono">c = (p + k) mod ${ABJAD.length}</span></p>
       ${tabel(['HURUF', 'p', 'HITUNG', 'HASIL'], baris)}
       <p class="mono">${d.t1} → ${d.t2}</p>`;
   }
@@ -209,12 +254,12 @@ $('tombolSebelum').onclick = () => tampilkanEpisode(Math.max(episodeAktif - 1, 0
 
 // ---------- 6. Kriptanalisis: brute force kunci Caesar ----------
 $('tombolBrute').onclick = () => jalankan(() => {
-  const cipher = $('inputCipher').value.toUpperCase();
+  const cipher = uraiHangul($('inputCipher').value.toUpperCase());
   if (!cipher.trim()) throw new Error('Isi cipherteks dulu (enkripsi atau isi di tab Dekripsi).');
   const { kolom } = ambilKunci();
 
   const baris = [];
-  for (let k = 0; k < 26; k++) {
+  for (let k = 0; k < ABJAD.length; k++) {
     let hasil;
     try {
       hasil = homofonikDekripsi(caesarDekripsi(transposisiDekripsi(cipher, kolom), k));
@@ -224,6 +269,16 @@ $('tombolBrute').onclick = () => jalankan(() => {
     baris.push(`<tr class="${hasil ? 'benar' : ''}"><td>${k}</td><td>${hasil ? '✓ ' + hasil : 'gagal: pasangan tidak ada di tabel'}</td></tr>`);
   }
   $('tabelBrute').innerHTML = '<tr><th>k</th><th>HASIL DEKRIPSI</th></tr>' + baris.join('');
+});
+
+function gantiBahasa(teks) {
+  $('inputAbjad').value = teks;
+  $('inputAbjad').dispatchEvent(new Event('change'));
+}
+
+$('inputAbjad').onchange = () => jalankan(() => {
+  setAlfabet($('inputAbjad').value.toUpperCase());
+  renderTabelHomofon();
 });
 
 // ---------- 7. Dialog tabel homofon ----------

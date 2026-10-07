@@ -34,6 +34,20 @@
     <!-- ===== KUNCI ===== -->
     <section class="bagian">
       <h2>Kunci</h2>
+      <div class="bahasa-opsi" style="margin-bottom: 1rem;">
+        <label>Alfabet (Dukungan Multi-bahasa)
+          <input id="inputAbjad" type="text" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ" style="width: 100%; margin-top: 0.5rem; letter-spacing: 2px;">
+        </label>
+        <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button type="button" class="btn btn-kecil" onclick="gantiBahasa('ABCDEFGHIJKLMNOPQRSTUVWXYZ')">Latin</button>
+          <button type="button" class="btn btn-kecil" onclick="gantiBahasa('АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ')">Rusia</button>
+          <button type="button" class="btn btn-kecil" onclick="gantiBahasa('ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ')">Yunani</button>
+          <button type="button" class="btn btn-kecil" onclick="gantiBahasa('ابتثجحخدذرزسشصضطظعغفقكلمنهوي')">Arab</button>
+          <button type="button" class="btn btn-kecil" onclick="gantiBahasa('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん')">Jepang (Hiragana)</button>
+          <button type="button" class="btn btn-kecil" onclick="gantiBahasa('ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㅏㅑㅓㅕㅗㅛㅜㅠㅡㅣ')">Korea (Hangul)</button>
+        </div>
+      </div>
+
       <div class="grid-kunci">
         <label>Kunci Caesar (k)
           <input id="kunciCaesar" type="number" value="3">
