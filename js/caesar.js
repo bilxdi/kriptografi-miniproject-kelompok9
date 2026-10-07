@@ -15,7 +15,7 @@ function caesarEnkripsi(teks, k) {
   let hasil = '';
   for (const ch of teks) {
     const p = ABJAD.indexOf(ch); // posisi huruf, -1 kalau bukan huruf
-    hasil += p === -1 ? ch : ABJAD[mod(p + k, ABJAD.length)];
+    hasil += p === -1 ? ch : ABJAD[mod(p + k, 26)];
   }
   return hasil;
 }

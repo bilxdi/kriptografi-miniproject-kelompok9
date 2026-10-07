@@ -6,12 +6,12 @@
 // Tabel homofon = KUNCI (harus sama saat enkripsi & dekripsi).
 // ======================================================
 
-let ABJAD = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // dipakai juga di caesar.js
+const ABJAD = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // dipakai juga di caesar.js
 
 // Tabel dari slide Kriptografi Klasik 1 hlm. 25, SUDAH DIPERBAIKI:
 // di slide ada 4 pasangan dobel (TF, JO, MS, FI) yang bikin dekripsi ambigu.
 // Diganti: N: TF->QZ, L: JO->VW, T: MS->XK, X: FI->ZQ
-const TABEL_HOMOFON_LATIN = {
+let TABEL_HOMOFON = {
   A: ['BU', 'TX', 'YR', 'MB', 'OP', 'TF', 'QA'],
   B: ['ER', 'FY'],
   C: ['IU', 'CW', 'PL'],
@@ -39,36 +39,6 @@ const TABEL_HOMOFON_LATIN = {
   Y: ['SR', 'DS'],
   Z: ['AR']
 };
-
-let TABEL_HOMOFON = { ...TABEL_HOMOFON_LATIN };
-
-function setAlfabet(abjadBaru) {
-  const unik = [...new Set([...abjadBaru.toUpperCase()])].filter(c => c.trim());
-  if (unik.length < 2) throw new Error("Alfabet minimal 2 karakter.");
-  ABJAD = unik.join('');
-  
-  if (ABJAD === 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
-    TABEL_HOMOFON = { ...TABEL_HOMOFON_LATIN };
-  } else {
-    // Buat tabel acak untuk alfabet baru
-    const pasangan = [];
-    for (const a of ABJAD) {
-      for (const b of ABJAD) {
-        pasangan.push(a + b);
-      }
-    }
-    pasangan.sort(() => Math.random() - 0.5); // acak
-    
-    TABEL_HOMOFON = {};
-    let pos = 0;
-    // Beri 2 atau 3 pasangan untuk tiap huruf (agar UI tidak terlalu panjang)
-    const jatah = Math.min(3, Math.max(1, Math.floor(pasangan.length / ABJAD.length)));
-    for (const huruf of ABJAD) {
-      TABEL_HOMOFON[huruf] = pasangan.slice(pos, pos + jatah);
-      pos += jatah;
-    }
-  }
-}
 
 // Enkripsi: huruf -> homofon acak. Karakter selain A-Z (spasi, angka) tetap.
 function homofonikEnkripsi(teks) {
