@@ -1,4 +1,10 @@
-# CipherFlix · Kriptografi Kelompok 9
+<p align="center">
+    <picture>
+        <img src="docs/cipherflix.svg" width=500 alt="CIPHERFLIX">
+    </picture>
+</p><br>
+
+# Kriptografi Kelompok 9
 
 Program enkripsi berlapis untuk Tugas Proyek Kriptografi (IF21A05), Informatika Unsoed.
 
