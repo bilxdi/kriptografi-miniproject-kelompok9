@@ -214,7 +214,9 @@ dialog {
   color: var(--teks);
   border: 1px solid var(--garis);
   border-radius: 6px;
+  scrollbar-color: #8B8B8B var(--kartu);
 }
+
 dialog::backdrop { background: rgba(0, 0, 0, 0.7); }
 .grid-homofon { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 16px; }
 .grid-homofon div { padding: 8px; background: var(--kartu-2); border-radius: 4px; font: 0.85rem "JetBrains Mono", monospace; }
