@@ -26,6 +26,8 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 
+html { scroll-padding-top: 48px; }
+
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
